@@ -1,0 +1,76 @@
+////2.二维数组
+////①比较的为每一行第一个元素
+//#include<stdio.h>
+//#include<stdlib.h>
+//#include<time.h>
+//int comp(const void *a, const void *b)
+//{
+//	const int * p1 = (const int *) a;//强制转换
+//	const int * p2 = (const int *) b;
+//	//if()
+//	//printf("%d %d %d\n", ((int *)p1)[0], ((int *)p2)[0],4);
+//	return p1[0] - p2[0];
+//}
+//int main(void)
+//{
+//	int i, j;
+//	int a[5][3];
+//	srand((unsigned)time(NULL));
+//	for (i = 0; i < 5; i++)
+//		for (j = 0; j < 3; j++)
+//				a[i][j]=rand()%100;
+//	for (i = 0; i < 5; i++)
+//	{
+//		for (j = 0; j < 3; j++)
+//			printf("%d\t", a[i][j]);
+//		printf("\n");
+//	}
+//	qsort(a, 5, 3 * sizeof(int), comp);
+//	puts("");
+//	for (i = 0; i < 5; i++)
+//	{
+//		for (j = 0; j < 3; j++)
+//			printf("%d\t", a[i][j]);
+//		printf("\n");
+//	}
+//	system("pause");
+//}
+
+////②比较每一个元素
+//#include<stdio.h>
+//#include<stdlib.h>
+//#include<time.h>
+//int comp(const void *a, const void *b);
+//
+//int main(void)
+//{
+//	srand((unsigned)time(NULL));
+//	int i, j;
+//	int a[5][3];
+//
+//	for (i = 0; i < 5; i++)
+//		for (j = 0; j < 3; j++)
+//			a[i][j] = rand() % 100;
+//
+//	for (i = 0; i < 5; i++)
+//	{
+//		for (j = 0; j < 3; j++)
+//			printf("%5d ", a[i][j]);
+//		putchar('\n');
+//	}
+//
+//	putchar('\n');
+//	qsort(a, 15, sizeof(int), comp);
+//	for (i = 0; i < 5; i++)
+//	{
+//		for (j = 0; j < 3; j++)
+//			printf("%5d ", a[i][j]);
+//		putchar('\n');
+//	}
+//	system("pause");
+//}
+//
+//int comp(const void *a, const void *b)
+//{
+//	return *(int *)a - *(int *)b;
+//}

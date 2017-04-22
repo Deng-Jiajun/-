@@ -1,0 +1,59 @@
+//“杂技”代码实现循环移位/向量旋转(编程珠玑 第二章习题答案3)
+/*以0 1 2 3 4 5 6 7 8 9 为例，该算法对其进行移2个位置的实际步骤如下：*/
+/*  2 1 4 3 6 5 8 7 8 9*/
+/*  2 1 4 3 6 5 8 7 0 9*/	//t赋值
+/*  2 3 4 5 6 7 8 9 0 9*/
+/*  2 3 4 5 6 7 8 9 0 1*/	//t赋值
+#include<stdio.h>
+#include<time.h>
+#define n 10
+int gcd(int a, int b);
+int main(void)
+{
+	int rotdist, i, j, k, t, a[n] = {0,1,2,3,4,5,6,7,8,9};
+	srand((unsigned)time(NULL));
+	for (i = 0; i < n; i++)
+		a[i] = rand() % 100;
+	for (i = 0; i < n; i++)
+		printf("%4d", a[i]);
+	putchar('\n');
+
+	printf("输入要旋转位置个数rotdist：");
+	scanf("%d", &rotdist);
+
+	for (i = 0; i < gcd(rotdist, n); i++)
+	{
+		t = a[i];//	存值
+		j = i;//	存下标
+		while (1)
+		{
+			k = j + rotdist;
+			if (k >= n)
+				k -= n;
+			if (k == i)
+				break;
+			a[j] = a[k];
+			j = k;
+		}	
+		a[j] = t;
+	}
+
+	for (i = 0; i < n; i++)
+		printf("%4d", a[i]);
+	putchar('\n');
+
+	system("pause");
+	return 0;
+}
+
+int gcd(int a, int b)
+{
+	while (a != b)
+	{
+		if (a > b)
+			a -= b;
+		else
+			b -= a;
+	}
+	return a;
+}

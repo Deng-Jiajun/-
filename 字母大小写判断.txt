@@ -1,0 +1,22 @@
+//判断s有没有大写字母
+bool Judge_Wheather_Capital_Letter(const std::string &s)
+{
+	for (auto i : s)
+	{
+		if (isupper(i))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+//把s的大写改小写
+std::string Transform_Capital_Letter(std::string &s)
+{
+	for (decltype(s.size()) i = 0; i != s.size(); i++)
+	{
+		s[i] = tolower(s[i]);
+	}
+	return s;
+}

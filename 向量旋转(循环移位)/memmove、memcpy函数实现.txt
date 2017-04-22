@@ -1,0 +1,43 @@
+//用memmove和memcpy实现循环移位
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#define SIZE 10
+int main(void)
+{
+	int tmp,i,n,a[SIZE] = { 0,1,2,3,4,5,6,7,8,9, },t[SIZE];
+	for (i = 0; i < SIZE; i++)
+		a[i] = rand() % 100;
+	printf("原来的a:");
+	for (i = 0; i < SIZE; i++)
+		printf("%d ", a[i]);
+	putchar('\n');
+
+	printf("要循环移位数n=");
+	scanf("%d", &n);
+
+	memcpy(t, a, n * sizeof(int));//	把前i位先存到t
+
+	printf("复制了n位到t:");
+	for (i = 0; i < n; i++)
+		printf("%d ", t[i]);
+	putchar('\n');
+
+	tmp = SIZE - n;
+	memmove(a, a + n, tmp * sizeof(int));//	第i+1位开始的（SIZE-n）位移到前面
+
+	printf("第i+1位开始的（SIZE-n）位移到前面的a:");
+	for (i = 0; i < SIZE; i++)
+		printf("%d ", a[i]);
+	putchar('\n');
+
+	memcpy(a + tmp, t, n * sizeof(int));
+	
+	printf("将t中保存的移到a：");
+	for (i = 0; i < SIZE; i++)
+		printf("%d ", a[i]);
+	putchar('\n');
+
+	system("pause");
+	return 0;
+}

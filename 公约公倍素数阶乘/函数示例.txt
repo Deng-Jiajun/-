@@ -1,0 +1,30 @@
+//设计一个函数MinCommonMultiple()，计算两个正整数的最小公倍数。
+#include<stdio.h>
+int main()
+{
+	int m, n;
+	printf("Enter tow integer m and n.");
+	scanf_s("%d %d", &m, &n);
+	printf("The lowest common multiple of m and n:%d\n", LCM(m,n));
+	system("pause");
+	return 0;
+}
+
+//compute the greatest common divisor of m and n.
+int GCD(int m,int n)
+{
+	int t;
+	while (n != 0)
+	{
+		t = n;//save the value of n.
+		n = m%n;
+		m = t;//read the value of n.	
+	}
+	return (m);
+}
+
+//compute the lowest common multiple 
+int LCM(int m, int n)
+{
+	return(m*n / GCD(m, n));
+}

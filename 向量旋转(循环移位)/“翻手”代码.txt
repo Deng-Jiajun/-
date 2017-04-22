@@ -1,0 +1,115 @@
+
+
+//这里提供两种方式，第二种方式的代码更容易理解
+
+/*
+ *“翻手”代码实现循环移位/向量旋转(编程珠玑 第二章习题答案3)
+ *由于伪代码格式问题，且只是为了演示算法，所以直接使用了全局变量的数组
+ */
+#include<stdlib.h>
+#include<stdio.h>
+#define n 10
+int x[n] = { 0,1,2,3,4,5,6,7,8,9 };
+void swap(int a, int b, int m);
+int main(void)
+{
+	int rotdist=3, i, j, p;
+	if (rotdist == 0 || rotdist == n)//	实际上位置没有改变
+		return 0;
+
+	i = p = rotdist;
+	j = n - p;
+	while (i != j)
+	{
+		if (i > j)
+		{
+			swap(p - i, p, j);
+			i -= j;
+		}
+		else
+		{
+			swap(p - i, p + j - i, i);
+			j -= i;
+		}
+	}
+	swap(p - i, p, i);
+
+	for (i = 0; i < n; i++)
+		printf("%d ", x[i]);
+	system("pause");
+	return 0;
+}
+
+/*
+ *		x[a]	与	x[b]
+ *		x[a+1]	与	x[b+1]
+ *		x[a+2]	与	x[b+2]
+ *		………………………………………………
+ *			互换
+ */
+void swap(int a, int b, int m)
+{
+	int i,t;
+	for (i = 0; i < m; i++)
+	{
+		t = x[a + i];
+		x[a + i] = x[b + i];
+		x[b + i] = t;
+	}
+}
+
+
+
+
+//将“翻手”代码格式重写
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+void reverse(int *x, int a, int b);
+int main(void)
+{
+	srand((unsigned)time(NULL));
+	int i;//	旋转个数
+	int n;//	元素个数
+	int k;//	循环条件控制
+	int *x;//	数组x[n]
+
+	i = rand() % 10;
+	n = rand() % 20;
+	while (i > n)
+		n = rand() % 20;
+
+	if (i == 0 || i == n)
+		return 0;
+
+	x = malloc(n * sizeof(int));
+	printf("i = %d ,n = %d \n", i, n);
+
+	for (k = 0; k < n; k++)//***** i已经被使用过，所以不要随随便便就习惯性for（i……）
+		x[k] = rand() % 100;
+
+	for (k = 0; k < n; k++)
+		printf("%d ", x[k]);
+	puts("\nAfter:");
+
+	reverse(x, 0, i - 1);
+	reverse(x, i, n - 1);
+	reverse(x, 0, n - 1);//先进行整体翻转，则为循环右移
+
+	for (k = 0; k < n; k++)
+		printf("%d ", x[k]);//***** i已经被使用过，所以不要随随便便就习惯性for（i……）
+//对于只是用来循环的条件，尽量使用for (int i = 0; i < 10; i++)环保卫生无污染
+
+	system("pause");
+	return 0;
+}
+void reverse(int *x, int a, int b)
+{
+	int i, t;
+	for (i = 0; i < (b - a + 1) / 2; i++)
+	{
+		t = x[a + i];
+		x[a + i] = x[b - i];
+		x[b - i] = t;
+	}
+}

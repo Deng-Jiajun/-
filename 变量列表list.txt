@@ -1,0 +1,12 @@
+// #include <initializer_list>中的 std::initializer_list<type>
+// 通过花括号进行列表初始化赋值数量不定的变量	↓
+//									sum_6_27({1,2,3,4,5})
+int sum_6_27(std::initializer_list<int> init)
+{
+	int sum = 0;
+	for (auto i : init)
+	{
+		sum += i;
+	}
+	return sum;
+}

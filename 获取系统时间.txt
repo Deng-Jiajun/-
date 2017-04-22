@@ -1,0 +1,14 @@
+/*获取当前系统时间，生成时间字符串*/
+#include<iostream>
+#include<Windows.h>//时间通过windows API获取
+#include<sstream>//string流
+int main(void)
+{
+	SYSTEMTIME st;
+	GetLocalTime(&st);//在需要获取时间的位置使用
+	std::ostringstream os;//将时间格式存入字符串
+	os << st.wYear << "-" << st.wMonth << "-" << st.wDay << "-" << "( " << st.wHour << ":" << st.wMinute << ":" << st.wSecond << ")";
+	std::cout << os.str()<<std::endl;
+	system("pause");
+	return 0;
+}

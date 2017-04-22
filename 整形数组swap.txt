@@ -1,0 +1,6 @@
+void swap(int& lhd, int& rhd)
+{
+	int tmp = lhd;
+	lhd = rhd;
+	rhd = tmp;
+}

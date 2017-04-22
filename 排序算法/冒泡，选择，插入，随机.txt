@@ -1,0 +1,163 @@
+/*各种排序算法 数据类型以 vector<int> 为例*/
+/*冒泡 选择 插入 随机 快速排序 随机化快速排序*/
+#include<iostream>
+#include<vector>
+#include<random>
+#include<ctime>
+#include<iomanip>
+using namespace std;
+
+/*随机范围函数*/
+const unsigned RangeRandom(const unsigned &a, const unsigned &b)
+{
+	std::uniform_int_distribution<unsigned> u(a, b);
+	static std::default_random_engine e(time(NULL));
+	return u(e);
+}
+
+/*冒泡排序*/
+void BubbleSort(vector<int> &ivec)
+{
+	for (auto &out : ivec)
+		for (auto &in : ivec)
+			if (out < in)
+				swap(out, in);
+}
+
+/*选择排序*/
+void SelectSort(vector<int> &ivec)
+{
+	for (size_t i = 0; i != ivec.size(); ++i)
+	{
+		auto min = ivec[i];
+		unsigned index(i);
+		for (size_t j = i+1; j != ivec.size(); ++j)
+		{
+			if (ivec[j] < min)
+			{
+				min = ivec[j];
+				index = j;
+			}
+		}
+		swap(ivec[i], ivec[index]);
+	}
+}
+
+/*插入排序*/
+void InsertionSort(vector<int> &ivec)
+{
+	for (size_t i = 1; i != ivec.size(); ++i)
+	{
+		int tmp = ivec[i];
+		int j = i - 1;//	j的类型设为size_t会出现警告，原因不明
+
+		while (j >= 0 && ivec[j] > tmp)
+		{
+			ivec[j + 1] = ivec[j];
+			--j;
+		}
+		ivec[j + 1] = tmp;
+	}
+}
+
+/*随机排序*/
+void RandomSort(vector<int> &ivec)
+{
+	const unsigned size = ivec.size();
+	for (unsigned i = 0; i != size; ++i)
+		swap(ivec[i], ivec[RangeRandom(i,size-1)]);
+}
+
+/*分治*/
+int Partition(vector<int> &A, int p, int r)
+{
+	int x = A[r];
+	int i = p - 1;
+	for (int j = p; j != r; ++j)
+	{
+		if (A[j] <= x)
+		{
+			++i;
+			swap(A[i], A[j]);
+		}
+	}
+	swap(A[i + 1], A[r]);
+	return i + 1;
+}
+/*快速排序*/
+void QuickSort(vector<int> &A, int p, int r)
+{
+	if (p < r)
+	{
+		int q = Partition(A, p, r);
+		QuickSort(A, p, q - 1);
+		QuickSort(A, q + 1, r);
+	}
+}
+
+/*随机分治*/
+int RandomizedPartition(vector<int> &A, int p, int r)
+{
+	int i = RangeRandom(p, r);
+	swap(A[r], A[i]);
+
+	return Partition(A, p, r);
+}
+
+void RandomizedQuickSort(vector<int> &A, int p, int r)
+{
+	if (p < r)
+	{
+		int q = RandomizedPartition(A, p, r);
+		RandomizedQuickSort(A, p, q - 1);
+		RandomizedQuickSort(A, q + 1, r);
+	}
+}
+void Print(vector<int> &ivec)
+{
+	for (const auto &i : ivec)
+		cout << setw(3) << i << " ";//输出i占3个字符
+	cout << '\n' << endl;
+}
+int main(void)
+{
+
+	vector<int> ivec;
+	vector<int> ivec2;
+	vector<int> ivec3;
+	vector<int> ivec5;
+	vector<int> ivec6;
+	unsigned times(20);
+
+	while (--times)
+	{
+		ivec.push_back(RangeRandom(1, 100));
+		ivec2.push_back(RangeRandom(1, 100));
+		ivec3.push_back(RangeRandom(1, 100));
+		ivec5.push_back(RangeRandom(1, 100));
+		ivec6.push_back(RangeRandom(1, 100));
+	}
+	BubbleSort(ivec);
+	SelectSort(ivec2);
+	InsertionSort(ivec3);
+	QuickSort(ivec5, 0, ivec5.size() - 1);
+	RandomizedQuickSort(ivec6, 0, ivec5.size()-1);
+	vector<int> ivec4(ivec);
+	RandomSort(ivec4);
+
+	cout << left;//左对齐
+	cout << "冒泡排序 ： "; Print(ivec);
+
+	cout << "选择排序 ： "; Print(ivec2);
+
+	cout << "插入排序 ： "; Print(ivec3);
+
+	cout << "随机排序 ： "; Print(ivec4);
+
+	cout << "快速排序 ： "; Print(ivec5);
+
+	cout << "随机快排 ： "; Print(ivec6);
+
+	system("pause");
+	return 0;
+}

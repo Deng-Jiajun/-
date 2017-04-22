@@ -1,0 +1,21 @@
+//3.×Ö·û´®
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+int comp(const void *p1, const void *p2)
+{
+	const char * a1 = (const char *)p1;//Ç¿ÖÆ×ª»»
+	const char * a2 = (const char *)p2;
+	return strcmp(a1, a2);
+}
+int main(void)
+{
+	char s[5][20] = { "fuyghjk","tugfyhui","sdjkfjl","dsjgkhbj","fdsuhgkj" };
+	int i;
+	qsort(s, 5, sizeof(s[0]), comp);
+	for (i = 0; i < 5; i++)
+		puts(s[i]);
+	system("pause");
+	return 0;
+}

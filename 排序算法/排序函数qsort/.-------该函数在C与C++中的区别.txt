@@ -1,0 +1,10 @@
+C和C++都可以把任何类型的指针赋给void类型的指针。
+但C++要求void*指针赋给任何类型的指针时必须进行强制类型转换，C并没有这样的要求。
+
+故在使用qsort函数时编写的comp函数中，可以统一使用类似格式：
+int comp(const void *a,const void *b)
+{
+	const int * p1 = (const int *) a;//强制转换
+	const int * p2 = (const int *) b;
+	return *(int *)p1 - *(int *)p2;//	a>b返回正值，a=b返回0，a<b返回赋值
+}

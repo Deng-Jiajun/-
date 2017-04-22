@@ -1,0 +1,82 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#define SIZE 10
+void show_array(const int ar[], int n);
+
+int main(void)
+{
+	int values[SIZE] = { 1,2,3,4,5,6,7,8,9,10 };
+	int target[SIZE];
+	double curious[SIZE / 2] = { 2.0,2.0e5,2.0e10,2.0e20,5.0e30 };
+	puts("memcpy() used:");
+	puts("values(original data):");
+	show_array(values, SIZE);
+	memcpy(target, values, SIZE * sizeof(int));
+	puts("\ntarget(copy of values):");
+	show_array(target, SIZE);
+	
+	puts("\nUsing memmove() with overlapping ranges:");
+	memmove(values + 2, values, 5 * sizeof(int));
+	puts("values--elements 0-4 copied to 2-6:");
+	show_array(values, SIZE);
+	puts("\nUsing memcpy() to copy double to int:");
+	memcpy(target, curious, (SIZE / 2) * sizeof(double));
+	puts("target--5doubles into 10 int positions：");
+	show_array(target, SIZE / 2);
+	show_array(target + 5, SIZE / 2);
+	system("pause");
+	return 0;
+}
+void show_array(const int ar[], int n)
+{
+	int i;
+	for (i = 0; i < n; i++)
+		printf("%d ", ar[i]);
+	putchar('\n');
+}
+
+
+//用memmove和memcpy实现循环移位
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#define SIZE 10
+int main(void)
+{
+	int tmp,i,n,a[SIZE] = { 0,1,2,3,4,5,6,7,8,9, },t[SIZE];
+	for (i = 0; i < SIZE; i++)
+		a[i] = rand() % 100;
+	printf("原来的a:");
+	for (i = 0; i < SIZE; i++)
+		printf("%d ", a[i]);
+	putchar('\n');
+
+	printf("要循环移位数n=");
+	scanf("%d", &n);
+
+	memcpy(t, a, n * sizeof(int));//	把前i位先存到t
+
+	printf("复制了n位到t:");
+	for (i = 0; i < n; i++)
+		printf("%d ", t[i]);
+	putchar('\n');
+
+	tmp = SIZE - n;
+	memmove(a, a + n, tmp * sizeof(int));//	第i+1位开始的（SIZE-n）位移到前面
+
+	printf("第i+1位开始的（SIZE-n）位移到前面的a:");
+	for (i = 0; i < SIZE; i++)
+		printf("%d ", a[i]);
+	putchar('\n');
+
+	memcpy(a + tmp, t, n * sizeof(int));
+	
+	printf("将t中保存的移到a：");
+	for (i = 0; i < SIZE; i++)
+		printf("%d ", a[i]);
+	putchar('\n');
+
+	system("pause");
+	return 0;
+}

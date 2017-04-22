@@ -1,0 +1,68 @@
+//结构体与文件
+//注：结构体排序问题可直接进行结构体赋值
+#include<stdio.h>
+#include<stdlib.h>
+#define SIZE 4
+struct student_type
+{
+	char name[10];
+	int num;
+	int age;
+	char addr[15];
+};
+	
+
+void save(void);
+void read(void);
+void output(void);
+struct student_type stu[SIZE];
+struct student_type stu1[SIZE];
+void main(void)
+{
+	int i;
+	printf("输入%d组学生数据：名字、学号、年龄、地址\n", SIZE);
+	for (i = 0; i < SIZE; i++)		
+		scanf("%s %d %d %s,", stu[i].name, &stu[i].num, &stu[i].age, stu[i].addr);
+	save();
+	read();
+	output();
+}
+void save(void)
+{
+	FILE *fp;
+	int i,count=1;
+	if ((fp = fopen("in.txt", "wb")) == NULL)
+	{
+		printf("can't open file\n");
+		return;
+	}
+	for (i = 0; i < SIZE; i++)
+		if (fwrite(&stu[i], sizeof(struct student_type), count, fp) != count)
+			printf("file write error\n");
+	fclose(fp);
+	printf("\n结构体stu写入文件完成！\n");
+}
+void read(void) 
+{
+	FILE *fp;
+	int i, count = 1;
+	if ((fp = fopen("in.txt", "rb")) == NULL)
+	{
+		printf("can't open file\n");
+		return;
+	}
+	for (i = 0; i < SIZE; i++)
+		if (fread(&stu1[i], sizeof(struct student_type), count, fp) != count)
+			printf("file read error\n");
+	fclose(fp);
+	printf("\n文件读取入stu1完成！\n");
+
+}
+void output(void)
+{
+	int i;
+	printf("\nstu1内容：\n");
+	for (i = 0; i < SIZE; i++)
+		printf("%s %d %d %s\n", stu1[i].name, stu1[i].num, stu1[i].age, stu1[i].addr);
+	system("pause");
+}

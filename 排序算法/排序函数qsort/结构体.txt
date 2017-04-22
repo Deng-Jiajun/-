@@ -1,0 +1,31 @@
+//4.½á¹¹Ìå
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+struct names
+{
+	char first[40];
+	char last[40];
+};
+struct names staff[100] = { {"ABDE","FGHI"},{"ABCDE","FGHIJ"} };
+
+int comp(const void * p1, const void * p2)
+{
+	const struct names *ps1 = (const struct names *)p1;
+	const struct names *ps2 = (const struct names *)p2;
+	int res;
+	res = strcmp(ps1->first, ps2->first);
+	if (res != 0)return res;
+	else
+		return strcmp(ps1->last, ps2->last);
+}
+int main(void)
+{
+	printf("%s %s\n", staff[0].first, staff[0].last);
+	printf("%s %s\n", staff[1].first, staff[1].last);
+	qsort(staff, 2, sizeof(struct names), comp);
+	printf("%s %s\n", staff[0].first, staff[0].last);
+	printf("%s %s\n", staff[1].first, staff[1].last);
+	system("pause");
+	return 0;
+}

@@ -1,0 +1,312 @@
+//	链表初始化、插入结点
+//#include<stdio.h>
+//#include<stdlib.h>
+//#define N 5
+//
+//struct node
+//{
+//	int data;
+//	struct node *next;
+//};
+//void main(void)
+//{
+//	struct node *p, *head, *p1, *p2;
+//	int i;
+//	head = NULL;
+//	p2 = NULL;
+//	//	初始化链表
+//	for (i = 1; i <= N; i++)
+//	{
+//		p1 = (struct node*)malloc(sizeof(struct node));
+//		(*p1).data = i;
+//
+//		if (head == NULL)
+//		{
+//			head = p1;
+//			p2 = p1;
+//		}
+//		else
+//		{
+//			p2->next = p1;
+//			p2 = p1;
+//		}
+//	}
+//	p2->next = NULL;
+//
+//	//	删除数据为2的链表结点
+//	p1 = head;
+//	while (p1->data != 2)
+//	{
+//		p2 = p1;
+//		p1 = p1->next;
+//	}
+//	//	循环结束后：p1->data==2 p2为p1（即data==2的元素）的前一个元素
+//	p2->next = p1->next;//将p2的next 指向p1的next
+//
+//	//delete p1;//	这玩意儿是c++的语句= =
+//				//	new delete		  malloc free
+//				//	这里delete的用法并不适合，用free比较好
+//				//	讲道理没有这句也是不影响的
+//				//	但是占用了不必要的内存空间酱
+//				//可以参照下一个程序，使用free((void *)p1);
+//
+//	p = head;
+//	printf("链表上各结点的数据为：\n");
+//	while (p != NULL)
+//	{
+//		printf("%d", p->data);
+//		p = p->next;
+//	}
+//	system("pause");
+//}
+
+
+//	实现链表的基本操作
+#include<stdio.h>
+#include<malloc.h>
+struct node
+{
+	int data;
+	struct node *next;
+};
+
+struct node *Create(void);
+void Print(struct node *head);
+struct node *Delete_one_node(struct node *head, int num);
+struct node *Delete_meet_node(struct node *head, int num);
+struct node *Insert(struct node *head, struct node *p);
+struct node *Create_sort(void);
+void deletechain(struct node *head);
+void main(void)
+{
+	struct node *head;
+	int num;
+	head = Create();						//	产生一条无序链表
+
+	Print(head);							//	输出链表上各结点值
+
+	puts("输入要删除结点上的整数：");
+	scanf("%d", &num);
+	puts("删一个：");
+	head = Delete_one_node(head, num);		//	删除链表上具有特定值的结点
+	Print(head);
+	puts("全删：");
+	head = Delete_meet_node(head, num);
+	Print(head);
+
+	puts("插入一个值为4的结点：");
+	struct node *p1 = (struct node *)malloc(sizeof(struct node));
+	p1->data = 4;
+	head = Insert(head, p1);				//	将新结点插入链表中
+	Print(head);
+
+	deletechain(head);						//	释放整个链表的结点空间
+
+	head = Create_sort();					//	产生一条无序链表（数值从小到大）
+	Print(head);
+	deletechain(head);						//	释放整个链表的结点空间
+	system("pause");
+}
+//	产生一条无序链表
+struct node *Create(void)
+{
+	struct node *p1, *p2, *head; //	p2指向最后一个结点, p1指向插入结点，head指向头结点
+	int a;
+	head = NULL;
+	p2 = NULL;
+	printf("产生一条无序链表，请输入数据，以-1结束：\n");
+	scanf("%d", &a);
+	while (a != -1)//1,3,2,4,-1
+	{
+
+		p1 = (struct node *)malloc(sizeof(struct node));
+		p1->data = a;
+		if (head == NULL)//	插入链表的首项
+		{
+			head = p1;
+			p2 = p1;
+		}
+		else//	插入链表尾
+		{
+			p2->next = p1;
+			p2 = p1;
+		}
+		scanf("%d", &a);
+	}
+
+	//	检测是否为空链表，即直接输入'-1'
+	//	不是则为链表尾指针赋NULL
+	if (head)
+		p2->next = NULL;
+	return (head);
+}
+
+//	输出链表上各结点的数据
+void Print(struct node *head)
+{
+	struct node *p;
+	p = head;
+	puts("链表上各结点的数据为");
+	while (p != NULL)
+	{
+		printf("%d	", p->data);
+		p = p->next;
+	}
+	puts("");
+}
+
+//	根据数据值删除链表的一个结点
+struct node *Delete_one_node(struct node *head, int num)
+{
+	struct node *p1, *p2;
+	if (head == NULL)
+	{
+		puts("链表为空，无结点可删除");
+		return NULL;
+	}
+	if (head->data == num)//	删除首结点
+	{
+		p1 = head;
+		head = head->next;
+		free((void*)p1);
+		puts("删除了一个结点！");
+	}
+	else
+	{
+		p1 = head;
+		p2 = head->next;//	p1指向比较结点的前一个结点
+		while(p2->data!=num&&p2->next!=NULL)
+		{
+			p1 = p2;
+			p2 = p2->next;
+		}//	出循环的p2为找到的结点
+
+		if (p2->data == num)//	删除找到的结点
+		{
+			p1->next = p2->next;
+			free((void *)p2);
+			puts("删除了一个结点！");
+		}
+		else
+			puts("链表上没有找到要删除的结点！");
+		
+	}
+	return head;
+}
+//	根据数据值删除链表上所有符合的结点
+struct node *Delete_meet_node(struct node *head, int num) 
+{
+	int flag=0;
+	struct node *p1, *p2;
+	if (head == NULL)
+	{
+		puts("链表为空，无结点可删除");
+		return NULL;
+	}
+	while (head->data == num)//	删除符合的首结点
+	{
+		p1 = head;
+		head = head->next;
+		free((void*)p1);
+	}
+	
+	while(1)
+	{
+		p1 = head;
+		p2 = head->next;//	p1指向比较结点的前一个结点
+		while (p2->data != num&&p2->next != NULL)
+		{
+			p1 = p2;
+			p2 = p2->next;
+		}//	出循环的p2为找到的结点
+
+		if (p2->data == num)//	删除找到的结点
+		{
+			p1->next = p2->next;
+			free((void *)p2);
+			flag++;
+		}	
+		else break;			
+	}
+	if (flag)puts("已删除所有符合的结点！");
+	if(!flag)puts("链表上没有找到要删除的结点！");
+	return head;
+}
+
+//	（从小到大的顺序插入结点）将一个结点插入链表中按顺序找到的第一个data大于要插入的结点的data值的结点前
+struct node *Insert(struct node *head, struct node *p)
+{
+	struct node *p1, *p2;
+
+	//	一、待插入的链表为空
+
+	//	插入链表首结点
+	if (head == NULL)
+	{
+		head = p;
+		p->next = NULL;
+		return head;
+	}
+
+	//二、非空链表
+
+	//	首结点的data都比要插入的结点的data值大，直接插入到链表的首结点
+	if (head->data >= p->data)
+	{
+		p->next = head;
+		head = p;
+		return head;
+	}
+
+	p2 = p1 = head;
+	while (p2->next && p2->data < p->data)// 找到要插入的位置
+	{
+		p1 = p2;
+		p2 = p2->next;
+	}	//	出循环时：
+		//	①	p2为链表尾（p2->next==NULL） 
+		//	②	p2->data >= p->data即找到了要插入的位置为p1与p2之间
+	
+	
+
+	if (p2->data < p->data)// 为①：	则插入链表尾
+	{
+		p2->next = p;
+		p->next = NULL;
+	}
+	else// 为②：		插入在p1和p2所指向的结点之间
+	{
+		p->next = p2;
+		p1->next = p;
+	}
+	return head;
+}
+
+//	产生一条有序链表
+struct node *Create_sort(void)
+{
+	struct node *p1, *head = NULL;
+	int a;
+	puts("产生一条有序链表,请输入数据，以-1结束：\n");
+	scanf("%d", &a);
+	while (a != -1)
+	{
+		p1 = (struct node *)malloc(sizeof(struct node));//	创建新结点
+		p1->data = a;
+		head = Insert(head, p1);//	从小到大顺序插入
+		scanf("%d", &a);
+	}
+	return head;
+}
+
+//释放链表上各结点占用的内存空间
+void deletechain(struct node *head)
+{
+	struct node *p1;
+	while (head)
+	{
+		p1 = head;
+		head = head->next;
+		free((void *)p1);
+	}
+}
